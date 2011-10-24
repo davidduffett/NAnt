@@ -55,7 +55,7 @@ namespace NAnt.DotNet.Tasks {
     ///   </para>
     ///   <code>
     ///     <![CDATA[
-    /// <asminfo output="AssemblyInfo.cs" language="CSharp">
+    /// <asminfo output="AssemblyInfo.cs" language="CSharp" encoding="utf-8">
     ///     <imports>
     ///         <import namespace="System" />
     ///         <import namespace="System.Reflection" />
@@ -111,7 +111,7 @@ namespace NAnt.DotNet.Tasks {
         private AssemblyAttributeCollection _attributes = new AssemblyAttributeCollection();
         private NamespaceImportCollection _imports = new NamespaceImportCollection();
         private AssemblyFileSet _references = new AssemblyFileSet();
-        private Encoding _encoding;
+        private Encoding _encoding = Encoding.UTF8;
 
         #endregion Private Instance Fields
 
@@ -187,12 +187,7 @@ namespace NAnt.DotNet.Tasks {
         [TaskAttribute("encoding")]
         public Encoding Encoding
         {
-            get
-            {
-                if (_encoding == null)
-                    return new UTF8Encoding();
-                return _encoding;
-            }
+            get { return _encoding; }
             set { _encoding = value; }
         }
 
