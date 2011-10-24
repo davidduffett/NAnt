@@ -111,6 +111,7 @@ namespace NAnt.DotNet.Tasks {
         private AssemblyAttributeCollection _attributes = new AssemblyAttributeCollection();
         private NamespaceImportCollection _imports = new NamespaceImportCollection();
         private AssemblyFileSet _references = new AssemblyFileSet();
+        private Encoding _encoding;
 
         #endregion Private Instance Fields
 
@@ -179,6 +180,22 @@ namespace NAnt.DotNet.Tasks {
             set { _references = value; }
         }
 
+        /// <summary>
+        /// The encoding to use when writing the AssemblyInfo file. The default is
+        /// UTF-8 encoding without a Byte Order Mark (BOM).
+        /// </summary>
+        [TaskAttribute("encoding")]
+        public Encoding Encoding
+        {
+            get
+            {
+                if (_encoding == null)
+                    return new UTF8Encoding();
+                return _encoding;
+            }
+            set { _encoding = value; }
+        }
+
         #endregion Public Instance Properties
 
         #region Override implementation of Task
@@ -206,7 +223,7 @@ namespace NAnt.DotNet.Tasks {
                 // to what is already present (if necessary)
                 MemoryStream generatedAsmInfoStream = new MemoryStream();
 
-                using (StreamWriter writer = new StreamWriter(generatedAsmInfoStream, Encoding.Default)) {
+                using (StreamWriter writer = new StreamWriter(generatedAsmInfoStream, _encoding)) {
                     // create new instance of CodeProviderInfo for specified CodeLanguage
                     CodeProvider codeProvider = new CodeProvider(this, Language);
 
